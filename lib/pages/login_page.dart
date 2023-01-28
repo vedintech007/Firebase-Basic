@@ -4,7 +4,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:learn_firebase/widgets/input_widget.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  const LoginPage({
+    super.key,
+    required this.showRegisterPage,
+  });
+
+  final VoidCallback showRegisterPage;
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -113,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: widget.showRegisterPage,
                       child: const Text(
                         "Register Now",
                         style: TextStyle(

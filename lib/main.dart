@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:learn_firebase/dismis_keyboard.dart';
-import 'package:learn_firebase/main_page.dart';
+import 'package:learn_firebase/utils/dismis_keyboard.dart';
+import 'package:learn_firebase/auth/main_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
