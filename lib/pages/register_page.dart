@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,16 +20,36 @@ class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _ageController = TextEditingController();
 
   Future signUp() async {
     if (fieldsNotEmpty() && passwordConfirmed()) {
       print("siging up...");
-      FirebaseAuth.instance.createUserWithEmailAndPassword(
+
+      // create user
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
       print("user Created");
+
+      // add details
+      addUserDetails();
     }
+  }
+
+  // add more details
+  Future addUserDetails() async {
+    await FirebaseFirestore.instance.collection("users").add(
+      {
+        'first name': _firstNameController.text.trim(),
+        'last name': _lastNameController.text.trim(),
+        'email': _emailController.text.trim(),
+        'age': _ageController.text.trim(),
+      },
+    );
   }
 
   bool passwordConfirmed() {
@@ -54,6 +75,17 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _ageController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[300],
@@ -63,12 +95,6 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(
-                  Icons.android,
-                  size: 100,
-                ),
-                const SizedBox(height: 40),
-                // hello again
                 Text(
                   "Hello There",
                   style: GoogleFonts.bebasNeue(
@@ -83,8 +109,26 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
 
-                // username / email textfield
                 const SizedBox(height: 30),
+                InputFieldWidget(
+                  hintText: "First Name",
+                  controller: _firstNameController,
+                ),
+
+                const SizedBox(height: 10),
+                InputFieldWidget(
+                  hintText: "Last Name",
+                  controller: _lastNameController,
+                ),
+
+                const SizedBox(height: 10),
+                InputFieldWidget(
+                  hintText: "Age",
+                  controller: _ageController,
+                ),
+
+                // username / email textfield
+                const SizedBox(height: 10),
                 InputFieldWidget(
                   hintText: "Email",
                   controller: _emailController,

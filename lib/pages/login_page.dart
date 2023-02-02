@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:learn_firebase/pages/forgot_password_page.dart';
 import 'package:learn_firebase/widgets/input_widget.dart';
 
 class LoginPage extends StatefulWidget {
@@ -21,12 +22,10 @@ class _LoginPageState extends State<LoginPage> {
 
   Future signIn() async {
     if (_emailController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
-      print("trying to login...");
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
-      print("Successfully signed in");
     }
   }
 
@@ -80,6 +79,34 @@ class _LoginPageState extends State<LoginPage> {
                   hintText: "Password",
                   obscureText: true,
                   controller: _passwordController,
+                ),
+
+                const SizedBox(height: 10),
+
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return ForgotPasswordPage();
+                        },
+                      ),
+                    );
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 25),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        "Forgot Password",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
 
                 // sign in btn
